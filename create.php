@@ -8,7 +8,8 @@ $user = new User($app->db);
 $user->insert(array(
 	'name' => $_POST['name'],
 	'email' => $_POST['email'],
-	'city' => $_POST['city']
+	'city' => $_POST['city'],
+	'phone_number' => $_POST['phone_number']
 ));
 
 // Redirect back to index

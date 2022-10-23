@@ -10,6 +10,7 @@
 						<th>Name</th>
 						<th>E-mail</th>
 						<th>City</th>
+						<th>Phone number</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -19,6 +20,7 @@
 						<td><?=$user->getEmail()?></td>
 						<!-- TODO: tooltip?, style as clickable, or remove -->
 						<td onclick="users_filter_by_city(this.textContent)" class="stretched-link"><?=$user->getCity()?></td>
+						<td><?=$user->getPhoneNumber()?></td>
 					</tr>
 					<?php }?>
 				</tbody>
@@ -66,6 +68,13 @@
 				<label for="city" class="col-sm-2 col-form-label">City</label>
 				<div class="col-sm-10">
 					<input name="city" type="text" input="text" id="city" class="form-control" required/>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="phone_number" class="col-sm-2 col-form-label">Phone number</label>
+				<div class="col-sm-10">
+					<input name="phone_number" type="text" input="text" id="phone_number" class="form-control" required/>
 				</div>
 			</div>
 			

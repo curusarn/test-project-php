@@ -24,4 +24,7 @@ class User extends BaseModel{
 		return $this->getField('city');
 	}
 	
+	public function getPhoneNumber() {
+		return $this->getField('phone_number');
+	}
 }
