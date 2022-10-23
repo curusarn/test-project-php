@@ -18,8 +18,7 @@
 					<tr>
 						<td><?=$user->getName()?></td>
 						<td><?=$user->getEmail()?></td>
-						<!-- TODO: tooltip?, style as clickable, or remove -->
-						<td onclick="users_filter_by_city(this.textContent)" class="stretched-link"><?=$user->getCity()?></td>
+						<td><?=$user->getCity()?></td>
 						<td><?=$user->getPhoneNumber()?></td>
 					</tr>
 					<?php }?>
