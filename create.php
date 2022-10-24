@@ -12,5 +12,4 @@ $user->insert(array(
 	'phone_number' => $_POST['phone_number']
 ));
 
-// Redirect back to index
-header('Location: index.php');
+exit('Success');

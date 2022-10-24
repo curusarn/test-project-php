@@ -3,28 +3,26 @@
 <div class="panel panel-primary">
 	<div class="panel-heading">Users</div>
 	<div class="panel-body">
-		<div class="table-responsive-sm">
-			<table id="users" class="table table-striped">
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>E-mail</th>
-						<th>City</th>
-						<th>Phone number</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php foreach($users as $user){?>
-					<tr>
-						<td><?=$user->getName()?></td>
-						<td><?=$user->getEmail()?></td>
-						<td><?=$user->getCity()?></td>
-						<td><?=$user->getPhoneNumber()?></td>
-					</tr>
-					<?php }?>
-				</tbody>
-			</table>				
-		</div>
+		<table id="users" class="table table-striped">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>E-mail</th>
+					<th>City</th>
+					<th>Phone number</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($users as $user){?>
+				<tr>
+					<td><?=$user->getName()?></td>
+					<td><?=$user->getEmail()?></td>
+					<td><?=$user->getCity()?></td>
+					<td><?=$user->getPhoneNumber()?></td>
+				</tr>
+				<?php }?>
+			</tbody>
+		</table>
 	</div>
 </div>
 
@@ -37,8 +35,8 @@
 				<input name="city_filter" input="text" id="users_filter_by_city" class="form-control"/>
 			</div>
 			<div class="col-sm-4">
-				<button onclick="users_filter_by_city(document.getElementById('users_filter_by_city').value)" class="btn btn-primary">Filter users</button>
-				<button id="filter_clear" onclick="users_filter_clear()" class="btn btn-primary" style="display: none">Show all users</button>
+				<button onclick="usersFilterByCity(document.getElementById('users_filter_by_city').value)" class="btn btn-primary">Filter users</button>
+				<button id="filter_clear" onclick="usersFilterClear()" class="btn btn-primary" style="display: none">Show all users</button>
 			</div>
 		</div>
 	</div>
@@ -48,7 +46,6 @@
 	<div class="panel-heading">Add a new user</div>
 	<div class="panel-body">
 		<form id="form_add_user" class="form form-horizontal">
-		<!--form id="form_add_user" method="post" action="create.php" class="form form-horizontal"-->
 			<div class="form-group row">
 				<label for="name" class="col-sm-2 col-form-label">Name</label>
 				<div class="col-sm-10">
@@ -81,3 +78,6 @@
 		</form>
 	</div>
 </div>
+
+<div id="form-success" class="alert alert-success" role="alert" style="display: none;">User added successfully</div>
+<div id="form-fail" class="alert alert-danger" role="alert" style="display: none;">Failed to add user</div>

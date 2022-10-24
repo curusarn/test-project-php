@@ -1,12 +1,16 @@
-
-// state of active city filter
-// used to determine whether or not new added users should be hidden or not
+// state of city filter
+// used to determine whether or not newly added users should be hidden or not
 var cityFilter = ""
 
-// user filtering
-function users_filter_by_city(city) {
+// alerts timeout
+// used to clear timeouts when adding multiple users immediately one after another
+var alertsTimeout = undefined
+
+// user filtering by city
+function usersFilterByCity(city) {
+	// searching with empty filter is equivalent to clearing it
 	if (city == "") {
-		return users_filter_clear()
+		return usersFilterClear()
 	}
 	cityFilter = city
 	var table = document.getElementById("users");
@@ -19,7 +23,7 @@ function users_filter_by_city(city) {
 	}
 	document.getElementById("filter_clear").style.display = '';
 };
-function users_filter_clear() {
+function usersFilterClear() {
 	cityFilter = ""
 	var table = document.getElementById("users");
 	for (var i = 0, row; row = table.rows[i]; i++) {
@@ -29,14 +33,15 @@ function users_filter_clear() {
 };
 
 // form to add user
-function add_user_row(name, email, city, phone_number, isHidden) {
-	// I don't like that this html structure is now in two different places
-	// but I don't know how to fix it
+function usersAddRow(name, email, city, phone_number, isVisible) {
+	// I'm unhappy that this html structure is now in two different places
+	// i.e. here and in index.php. I think I would rather generate all the rows
+	// using JavaScript but that seems out of scope of this excercise.
 	var row = ""
-	if (isHidden) {
-		row += "<tr style='display: none'>"
-	} else {
+	if (isVisible) {
 		row += "<tr>"
+	} else {
+		row += "<tr style='display: none'>"
 	}
 	row += "<td>" + name + "</td>"
 	row += "<td>" + email + "</td>"
@@ -46,8 +51,14 @@ function add_user_row(name, email, city, phone_number, isHidden) {
 	$("#users > tbody:last-child").append(row)
 }
 
+function hideAlerts() {
+	document.getElementById("form-success").style.display = 'none';
+	document.getElementById("form-fail").style.display = 'none';
+}
+
 $(document).ready(function () {
 	$("#form_add_user").submit(function (event) {
+		event.preventDefault();
 		var formData = {
 			name: $("#name").val(),
 			email: $("#email").val(),
@@ -55,24 +66,29 @@ $(document).ready(function () {
 			phone_number: $("#phone_number").val(),
 		};
 
+		hideAlerts();
+		if (alertsTimeout != undefined) {
+			clearTimeout(alertsTimeout)
+		};
 		$.ajax({
 			type: "POST",
 			url: "create.php",
 			data: formData,
 			dataType: "json",
 			encode: true,
-		}).done(function (data) {
-			// TODO: Show sucess message
-			console.log(data);
-		}).fail(function (data) {
-			// TODO: Show fail message
-			console.log(data);
+		}).always(function (data) {
+			if(data.status != 200) {
+				document.getElementById("form-fail").style.display = '';
+			} else {
+				document.getElementById("form-success").style.display = '';
+			}
 		});
+		alertsTimeout = setTimeout(hideAlerts, 3000);
 
-		// hide user if there is active filter and it doesn't match the user's city
-		var isHidden = (cityFilter != "" && cityFilter != formData.city)
-		add_user_row(formData.name, formData.email, formData.city, formData.phone_number, isHidden)
+		// only show the newly added user if
+		// there is no active filter OR active filter matches the user's city
+		var isVisible = (cityFilter == "" || cityFilter == formData.city);
+		usersAddRow(formData.name, formData.email, formData.city, formData.phone_number, isVisible);
 
-		event.preventDefault();
 	});
 });
